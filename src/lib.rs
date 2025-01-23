@@ -116,3 +116,20 @@ pub fn open_wallpaper(
     }
     cmd.output()
 }
+
+/// Removes a wallpaper. Allows you to select a monitor by index, or internal identifier.
+pub fn remove_wallpaper(
+    exe_path: PathBuf,
+    location: Option<String>,
+    monitor: Option<u8>,
+) -> Result<Output, Error> {
+    let mut cmd: &mut Command = &mut Command::new(exe_path.as_path().as_os_str());
+    cmd = cmd.arg("-control").arg("closeWallpaper");
+    if let Some(location) = location {
+        cmd = cmd.arg("-location").arg(location);
+    }
+    if let Some(monitor) = monitor {
+        cmd = cmd.arg("-monitor").arg(monitor.to_string());
+    }
+    cmd.output()
+}
